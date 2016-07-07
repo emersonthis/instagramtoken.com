@@ -97,7 +97,7 @@ Response:
             client_id: clientId,
             client_secret: clientSecret,
             grant_type: 'authorization_code',
-            redirect_uri:  request.headers.host + '/oauthredirect',
+            redirect_uri:  req.headers.host + '/oauthredirect',
             code : req.query.code
         };
         request.post({url:`https://api.instagram.com/oauth/access_token`, formData: formData}, function optionalCallback(err, httpResponse, body) {
