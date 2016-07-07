@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Get IG Token</title>
+
+    <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+
+<div class="container">
+<h3>IN</h3>
+
+<form class="markdown-form" id="form" action="./requesttoken" method="post" onsubmit="onSubmit(event);">
+    <label>Client ID</label>
+    <input type="text" name="client_id" id="client_id" />
+    <label>Client Secret</label>
+    <input type="text" name="client_secret" id="client_secret" />
+    <div class="submit-wrap"><input type="submit" value="Send"></div>
+</form>
+
+<!-- <h3>Response</h3>
+<div class="markup-text" id="response" placeholder="Response will appear here..."></div> -->
+
+</div><!-- .container -->
+
+<!-- <script src="/socket.io.js"></script>
+<script>
+  var socket = io();
+  console.log(socket);
+</script>
+ -->
+
+ <script   src="https://code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="   crossorigin="anonymous"></script> 
+ 
+ <script>
+    function onSubmit(e) {
+        client_id = document.getElementById('client_id').value;
+        client_secret = document.getElementById('client_secret').value;
+        console.log('client_id', client_id);
+        console.log('client_secret', client_secret);
+        redirect_uri = window.location.origin + '/oauthredirect';
+        console.log('redirect_uri', redirect_uri);
+
+        window.location.href = 'https://api.instagram.com/oauth/authorize/?client_id='+client_id+'&redirect_uri='+redirect_uri+'&response_type=code&scope=public_content';
+        e.preventDefault();
+    }
+</script>
+</body>
+</html>
