@@ -97,7 +97,7 @@ Response:
             client_id: clientId,
             client_secret: clientSecret,
             grant_type: 'authorization_code',
-            redirect_uri:  req.headers.host + '/oauthredirect',
+            redirect_uri: ( (req.connection.encrypted) ? 'https://' : 'http://' ) + req.headers.host + '/oauthredirect',
             code : req.query.code
         };
         console.log('formData', formData);
