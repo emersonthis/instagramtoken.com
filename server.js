@@ -61,6 +61,8 @@ app.use(bodyParser.urlencoded({ extended: false}));
 
 
 app.listen(process.env.PORT || 3000);
+
+// http://instagramtoken.herokuapp.com/oauthredirect?code=6783303006404cf4b92c1601427ca6ac
 app.get("/oauthredirect", function(req, res){
         
         console.log(req);
@@ -94,7 +96,7 @@ Response:
         var formData = {
             client_id: clientId,
             client_secret: clientSecret,
-            grant_type: authorization_code,
+            grant_type: 'authorization_code',
             redirect_uri:  request.headers.host + '/oauthredirect',
             code : req.query.code
         };
