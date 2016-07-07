@@ -65,7 +65,7 @@ app.listen(process.env.PORT || 3000);
 // http://instagramtoken.herokuapp.com/oauthredirect?code=6783303006404cf4b92c1601427ca6ac
 app.get("/oauthredirect", function(req, res){
         
-        console.log(req);
+        // console.log(req);
 
 
         // get the CODE from the request
@@ -100,6 +100,7 @@ Response:
             redirect_uri:  req.headers.host + '/oauthredirect',
             code : req.query.code
         };
+        console.log('formData', formData);
         request.post({url:`https://api.instagram.com/oauth/access_token`, formData: formData}, function optionalCallback(err, httpResponse, body) {
             if (err) {
                 return console.error('Error:', err);
