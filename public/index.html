@@ -40,8 +40,8 @@
         
         var client_id = document.getElementById('client_id').value;
         var client_secret = document.getElementById('client_secret').value;
-        var redirect_uri = window.location.origin + '/oauthredirect/?client_secret=' + client_secret + '&client_id=' + client_id;
-        // redirect_uri = encodeURIComponent(redirect_uri);
+        var redirect_uri = window.location.origin + '/oauthredirect/?cs=' + client_secret + '&ci=' + client_id;
+        redirect_uri = encodeURIComponent(redirect_uri);
 
         console.log('client_id', client_id);
         console.log('client_secret', client_secret);
@@ -52,11 +52,7 @@
         
         console.log('href', href);
 
-        try {
-            window.location.href = href;
-        } catch(e) {
-            console.log(e);
-        }
+        window.location.href = href;
 
         e.preventDefault();
     }

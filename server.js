@@ -92,8 +92,8 @@ Response:
     }
 }
 */
-        clientId = req.query.client_id;
-        clientSecret = req.query.client_secret;
+        clientId = req.query.ci;
+        clientSecret = req.query.cs;
 
         var formData = {
             client_id: clientId,
