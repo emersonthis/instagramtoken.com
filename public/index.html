@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Get IG Token</title>
+    <title>Instagram Token Generator</title>
 
     <link rel="stylesheet" href="./style.css" />
 </head>
@@ -12,7 +12,7 @@
 <div class="container">
 <h3>IN</h3>
 
-<form class="markdown-form" id="form" action="./requesttoken" method="post" onsubmit="onSubmit(event);">
+<form class="markdown-form" id="form" method="post" onsubmit="onSubmit(event);">
     <label>Client ID</label>
     <input type="text" name="client_id" id="client_id" />
     <label>Client Secret</label>
@@ -36,14 +36,20 @@
  
  <script>
     function onSubmit(e) {
+        
         client_id = document.getElementById('client_id').value;
         client_secret = document.getElementById('client_secret').value;
+        redirect_uri = encodeURIComponent( window.location.origin + '/oauthredirect?client_secret=' + client_secret + '&client_id=' + client_id);
+
         console.log('client_id', client_id);
         console.log('client_secret', client_secret);
-        redirect_uri = window.location.origin + '/oauthredirect';
         console.log('redirect_uri', redirect_uri);
 
-        window.location.href = 'https://api.instagram.com/oauth/authorize/?client_id='+client_id+'&redirect_uri='+redirect_uri+'&response_type=code&scope=public_content';
+        var base = 'https://api.instagram.com/oauth/authorize/?';
+        var href = base + 'client_id='+client_id+'&redirect_uri='+redirect_uri+'&response_type=code&scope=public_content';
+        
+        window.location.href = href;
+
         e.preventDefault();
     }
 </script>

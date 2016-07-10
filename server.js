@@ -8,8 +8,9 @@ var url = require('url');
 
 var clientId, redirectUri, clientSecret, redirectUri;
 
-clientId = '64fe4035a90d4014ab03bfd83ceadb7e';
-clientSecret = '5cb0a82ad4e748b4a882e57235ec3651';
+// clientId = '64fe4035a90d4014ab03bfd83ceadb7e';
+// clientSecret = '5cb0a82ad4e748b4a882e57235ec3651';
+
 /*
 
 
@@ -91,7 +92,8 @@ Response:
     }
 }
 */
-
+        clientId = req.query.client_id;
+        clientSecret = req.query.client_secret;
 
         var formData = {
             client_id: clientId,
@@ -100,7 +102,9 @@ Response:
             redirect_uri: ( (req.connection.encrypted) ? 'https://' : 'http://' ) + req.headers.host + '/oauthredirect',
             code : req.query.code
         };
+        
         console.log('formData', formData);
+        
         request.post({url:`https://api.instagram.com/oauth/access_token`, formData: formData}, function optionalCallback(err, httpResponse, body) {
             if (err) {
                 return console.error('Error:', err);
