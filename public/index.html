@@ -15,9 +15,9 @@
 
 <form class="markdown-form" id="form" onsubmit="onSubmit(event);">
     <label>Client ID</label>
-    <input type="text" name="client_id" id="client_id" />
+    <input type="text" name="client_id" id="client_id" value="64fe4035a90d4014ab03bfd83ceadb7e" />
     <label>Client Secret</label>
-    <input type="text" name="client_secret" id="client_secret" />
+    <input type="text" name="client_secret" id="client_secret" value="5cb0a82ad4e748b4a882e57235ec3651" />
     <div class="submit-wrap"><input type="submit" value="Create token"></div>
 </form>
 
@@ -48,11 +48,15 @@
         console.log('redirect_uri', redirect_uri);
 
         var base = 'https://api.instagram.com/oauth/authorize/?';
-        var href = base +'&redirect_uri='+redirect_uri+'&response_type=code&scope=public_content&client_id='+client_id;
+        var href = base +'redirect_uri='+redirect_uri+'&response_type=code&scope=public_content&client_id='+client_id;
         
         console.log('href', href);
 
-        window.location.href = href;
+        try {
+            window.location.href = href;
+        } catch(e) {
+            console.log(e);
+        }
 
         e.preventDefault();
     }
