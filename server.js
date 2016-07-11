@@ -26,16 +26,28 @@ app.post('/submit', function(req, res){
     sess = req.session;
     sess.client_id = req.body.client_id;
     sess.client_secret = req.body.client_secret;
+
+    var scopes = '';
+    scopes += req.body.scope_public_content ? 'public_content' : '';
+    scopes += req.body.scope_follower_list ? '+follower_list' : '';
+    scopes += req.body.scope_comments ? '+comments' : '';
+    scopes += req.body.scope_relationships ? '+relationships' : '';
+    scopes += req.body.scope_likes ? '+likes' : '';
+    scopes = (scopes) ? '&scope='+scope : '';
         
-    var redirect_uri = req.headers.origin + '/oauthredirect';
+    var redirect_uri = req.headers.origin;
     var base = 'https://api.instagram.com/oauth/authorize/?';
-    var href = base +'redirect_uri='+redirect_uri+'&response_type=code&scope=public_content&client_id='+req.body.client_id;
+    var href = base +'redirect_uri='+redirect_uri+'&response_type=code'+scopes+'&client_id='+req.body.client_id;
     
     res.redirect(href);
 });
 
 // http://instagramtoken.herokuapp.com/oauthredirect?code=6783303006404cf4b92c1601427ca6ac
-app.get("/oauthredirect", function(req, res){
+app.get("/", function(req, res){
+
+        // If there's no code param we're just showing the index
+        if (!req.query.code)
+            return res.render('index.ejs');
         
         // These were saved during the /submit
         try {
@@ -59,7 +71,7 @@ app.get("/oauthredirect", function(req, res){
             client_id: clientId,
             client_secret: clientSecret,
             grant_type: 'authorization_code',
-            redirect_uri: ( (req.connection.encrypted) ? 'https://' : 'http://' ) + req.headers.host + '/oauthredirect',
+            redirect_uri: ( (req.connection.encrypted) ? 'https://' : 'http://' ) + req.headers.host,
             code : req.query.code
         };
                 

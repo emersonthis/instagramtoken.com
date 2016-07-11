@@ -11,8 +11,8 @@ body {
 .markdown-form {
     margin-bottom:1em;
 }
-
-.markdown-form input {
+.markdown-form input[type="submit"],
+.markdown-form input[type="text"] {
     box-sizing: border-box;
     padding:0 .25em;
     width:100%;
@@ -50,4 +50,23 @@ body {
     display:block;
     font-family:Courier, monospace;
     overflow-x:scroll;
+}
+
+.token {
+    font-size:120%;
+    border: 1px solid;
+    padding:.5em;
+    display:inline-block;
+}
+
+.scopes {
+    display:flex;
+    justify-content: stretch;
+    margin-bottom:1em;
+}
+.scopes__group {
+    flex-grow:1;
+}
+.scopes__group label{
+    display:block;
 }
