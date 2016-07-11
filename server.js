@@ -1,100 +1,56 @@
 var express = require('express');
+var session = require('express-session');
 var bodyParser = require("body-parser");
 var http = require('http').Server(app);
 var request = require('request');
 var app = express();
 var url = require('url');
+var clientId, redirectUri, clientSecret, redirectUri, sess;
 
-
-var clientId, redirectUri, clientSecret, redirectUri;
-
-// clientId = '64fe4035a90d4014ab03bfd83ceadb7e';
-// clientSecret = '5cb0a82ad4e748b4a882e57235ec3651';
-
-/*
-
-
-Step 1 = send
-// https://api.instagram.com/oauth/authorize/?client_id=CLIENT-ID&redirect_uri=REDIRECT-URI&response_type=code&scope=public_content
-
-
-Step 2 = receive
-// http://your-redirect-uri?code=CODE
-
-Step 3 = send
-
-client_id: your client id
-client_secret: your client secret
-grant_type: authorization_code is currently the only supported value
-redirect_uri: the redirect_uri you used in the authorization request. Note: this has to be the same value as in the authorization request.
-code: the exact code you received during the authorization step.
-
-    curl -F 'client_id=CLIENT_ID' \
-    -F 'client_secret=CLIENT_SECRET' \
-    -F 'grant_type=authorization_code' \
-    -F 'redirect_uri=AUTHORIZATION_REDIRECT_URI' \
-    -F 'code=CODE' \
-    https://api.instagram.com/oauth/access_token
-
-Response:
-{
-    "access_token": "fb2e77d.47a0479900504cb3ab4a1f626d174d2d",
-    "user": {
-        "id": "1574083",
-        "username": "snoopdogg",
-        "full_name": "Snoop Dogg",
-        "profile_picture": "..."
-    }
-}
-*/
-
-
-
+app.use(session({secret: 'thisemerson'}));
 app.use(function(req, res, next){
     console.log(`${req.method} request for '${req.url}'`);
     next();
 });
-
 app.use(express.static("./public"));
-
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false}));
-
+app.use(bodyParser.urlencoded({ extended: true}));
 
 app.listen(process.env.PORT || 3000);
+
+app.post('/submit', function(req, res){
+    sess = req.session;
+    sess.client_id = req.body.client_id;
+    sess.client_secret = req.body.client_secret;
+        
+    var redirect_uri = req.headers.origin + '/oauthredirect';
+    var base = 'https://api.instagram.com/oauth/authorize/?';
+    var href = base +'redirect_uri='+redirect_uri+'&response_type=code&scope=public_content&client_id='+req.body.client_id;
+    
+    res.redirect(href);
+});
 
 // http://instagramtoken.herokuapp.com/oauthredirect?code=6783303006404cf4b92c1601427ca6ac
 app.get("/oauthredirect", function(req, res){
         
-        // console.log(req);
+        // These were saved during the /submit
+        try {
+            clientId = sess.client_id;
+            clientSecret = sess.client_secret;
+        } catch (e) {
+            res.status(500).send('Problem with session vars. Are cookies enabled?');
+        }
 
+        // Erase saved client_secret for security
+        sess.client_id = null;
+        sess.client_secret = null;
 
-        // get the CODE from the request
+        // Safety check for session vars properly set
+        if ( !clientId || !clientSecret ) {
+            res.status(500).send('Invalid client ID or secret.');
+        }
 
-        // use the code to make a request for the token
-
-/*
-    curl -F 'client_id=CLIENT_ID' \
-    -F 'client_secret=CLIENT_SECRET' \
-    -F 'grant_type=authorization_code' \
-    -F 'redirect_uri=AUTHORIZATION_REDIRECT_URI' \
-    -F 'code=CODE' \
-    https://api.instagram.com/oauth/access_token
-
-Response:
-{
-    "access_token": "fb2e77d.47a0479900504cb3ab4a1f626d174d2d",
-    "user": {
-        "id": "1574083",
-        "username": "snoopdogg",
-        "full_name": "Snoop Dogg",
-        "profile_picture": "..."
-    }
-}
-*/
-        clientId = req.query.ci;
-        clientSecret = req.query.cs;
-
+        // Build POST data for token request
         var formData = {
             client_id: clientId,
             client_secret: clientSecret,
@@ -102,15 +58,27 @@ Response:
             redirect_uri: ( (req.connection.encrypted) ? 'https://' : 'http://' ) + req.headers.host + '/oauthredirect',
             code : req.query.code
         };
-        
-        console.log('formData', formData);
-        
+                
         request.post({url:`https://api.instagram.com/oauth/access_token`, formData: formData}, function optionalCallback(err, httpResponse, body) {
             if (err) {
-                return console.error('Error:', err);
+                console.log('Instagram token error:', err);
+                res.status(500).send(err);
             }
-            console.log('Ig responded with:', body);
-            res.json(body);
+            /*
+            //RESPONSE SHOULD LOOK LIKE THIS:
+            {
+                "access_token": "fb2e77d.47a0479900504cb3ab4a1f626d174d2d",
+                "user": {
+                    "id": "1574083",
+                    "username": "snoopdogg",
+                    "full_name": "Snoop Dogg",
+                    "profile_picture": "..."
+                }
+            }
+            */
+            var token = JSON.parse(body).access_token;
+            res.render('/public/token.html', {token: token});
+            // res.status(200).send(token);
         });
 });
 
