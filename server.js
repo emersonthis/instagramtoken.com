@@ -33,7 +33,7 @@ app.post('/submit', function(req, res){
     scopes += req.body.scope_comments ? '+comments' : '';
     scopes += req.body.scope_relationships ? '+relationships' : '';
     scopes += req.body.scope_likes ? '+likes' : '';
-    scopes = (scopes) ? '&scope='+scope : '';
+    scopes = (scopes) ? '&scope='+scopes : '';
         
     var redirect_uri = req.headers.origin;
     var base = 'https://api.instagram.com/oauth/authorize/?';
