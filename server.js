@@ -3,6 +3,7 @@ var session = require('express-session');
 var bodyParser = require("body-parser");
 var http = require('http').Server(app);
 var request = require('request');
+var html = require('html');
 var app = express();
 var url = require('url');
 var clientId, redirectUri, clientSecret, redirectUri, sess;
@@ -13,6 +14,9 @@ app.use(function(req, res, next){
     next();
 });
 app.use(express.static("./public"));
+app.set('views', __dirname + '/views');
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
@@ -77,7 +81,7 @@ app.get("/oauthredirect", function(req, res){
             }
             */
             var token = JSON.parse(body).access_token;
-            res.render('/public/token.html', {token: token});
+            res.render('token.ejs', {token: token});
             // res.status(200).send(token);
         });
 });

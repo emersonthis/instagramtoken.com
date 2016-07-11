@@ -18,8 +18,10 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.15.1",
+    "ejs": "^2.4.2",
     "express": "^4.13.4",
     "express-session": "^1.14.0",
+    "html": "0.0.10",
     "http": "0.0.0",
     "q": "^1.4.1",
     "request": "^2.72.0"
