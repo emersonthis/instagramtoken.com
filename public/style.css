@@ -31,6 +31,11 @@ body {
     text-align:right;
 }
 
+.markdown-form label {
+    font-weight:bold;
+}
+.markdown-form .scopes label { font-weight:normal; }
+
 .markdown-form input[type="submit"] {
     border-radius:0;
     padding:.5em 1em; 
