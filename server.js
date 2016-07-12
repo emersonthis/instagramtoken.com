@@ -74,7 +74,8 @@ app.get("/", function(req, res){
             redirect_uri: ( (req.connection.encrypted) ? 'https://' : 'http://' ) + req.headers.host,
             code : req.query.code
         };
-                
+        
+        console.log('requesting token with:', formData);
         request.post({url:`https://api.instagram.com/oauth/access_token`, formData: formData}, function optionalCallback(err, httpResponse, body) {
             if (err) {
                 console.log('Instagram token error:', err);
