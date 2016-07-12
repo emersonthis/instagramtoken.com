@@ -27,13 +27,13 @@ app.post('/submit', function(req, res){
     sess.client_id = req.body.client_id;
     sess.client_secret = req.body.client_secret;
 
-    var scopes = '';
-    scopes += req.body.scope_public_content ? 'public_content' : '';
-    scopes += req.body.scope_follower_list ? '+follower_list' : '';
-    scopes += req.body.scope_comments ? '+comments' : '';
-    scopes += req.body.scope_relationships ? '+relationships' : '';
-    scopes += req.body.scope_likes ? '+likes' : '';
-    scopes = (scopes) ? '&scope='+scopes : '';
+    var scopes = [];
+    if (req.body.scope_public_content) scopes.push('public_content');
+    if (req.body.scope_follower_list) scopes.push('follower_list');
+    if (req.body.scope_comments) scopes.push('comments');
+    if (req.body.scope_relationships) scopes.push('relationships');
+    if (req.body.scope_likes) scopes.push('likes');
+    scopes = (scopes) ? '&scope='+scopes.join('+') : '';
         
     var redirect_uri = req.headers.origin;
     var base = 'https://api.instagram.com/oauth/authorize/?';
@@ -95,7 +95,12 @@ app.get("/", function(req, res){
                 }
             }
             */
-            var token = JSON.parse(body).access_token;
+            var bodyJson = JSON.parse(body);
+            var token = bodyJson.access_token;
+            if (!token){
+                var msg = (bodyJson.error_message == "Redirect URI doesn't match original redirect URI") ? 'You need to add https://instagramtoken.com to your client\'s Valid redirect URI' : body;
+                res.status(500).send(body);
+            }
             console.log('body', body);
             console.log('token', token);
             res.render('token.ejs', {token: token});
