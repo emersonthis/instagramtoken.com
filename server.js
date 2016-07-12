@@ -66,12 +66,14 @@ app.get("/", function(req, res){
             res.status(500).send('Invalid client ID or secret.');
         }
 
+        var ssl = ( req.headers['x-forwarded-proto'] || req.connection.encrypted ) ? true : false;
+
         // Build POST data for token request
         var formData = {
             client_id: clientId,
             client_secret: clientSecret,
             grant_type: 'authorization_code',
-            redirect_uri: ( (req.connection.encrypted) ? 'https://' : 'http://' ) + req.headers.host,
+            redirect_uri: ( (ssl) ? 'https://' : 'http://' ) + req.headers.host,
             code : req.query.code
         };
         
