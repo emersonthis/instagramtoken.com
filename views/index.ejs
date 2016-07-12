@@ -14,11 +14,11 @@
 <h1>Instagram Token Generator</h1>
 
 <h3>Instructions</h3>
-<p>1. <code>https:instagramtoken.com</code> (<emph>exactly</emph> as written) must be a "Valid redirect URI" for <a target="_blank" href="https://www.instagram.com/developer/clients/manage/">your client</a>. </p>
+<p>1. <code>https:instagramtoken.com</code> (<emph>exactly</emph> as written) must be a "Valid redirect URI" for <a target="_blank" href="https://www.instagram.com/developer/clients/manage/">your client</a>.</p>
 
 <p>2. Enter <a href="https://www.instagram.com/developer/clients/manage/" target="_blank">your Instagram client</a>'s <strong>client ID</strong> and <strong>client secret</strong>.</p>
 
-<p>3. On the next screen, click "Authorize"</p>
+<p>3. Submit the form, and on the next screen, click "Authorize" to receive your token.</p>
 
 <form class="markdown-form" id="form" action="./submit" method="post">
     
@@ -27,18 +27,19 @@
     <label>Client Secret</label>
     <input type="text" name="client_secret" id="client_secret" value="" />
     
-    <label>Scopes <a href="https://medium.com/@emersonthis/instagram-on-websites-the-new-landscape-62c91d733894#37c4" target="_blank">?</a></label>
-    <div class="scopes">            
+    <label aria-hidden=true>Scopes</label>
+    <div aria-label="scopes" class="scopes">
+        <legend class="sr-only">Scopes <a href="https://medium.com/@emersonthis/instagram-on-websites-the-new-landscape-62c91d733894#37c4" target="_blank" aria-label="Summary of Instagram scope">?</a></legend>        
         <div class="scopes__group--left scopes__group">
-        <label><input type="checkbox" name="scope_basic" checked disabled /> basic</label>
-        <label><input type="checkbox" name="scope_public_content" value="public_content "/> public_content</label>
-        <label><input type="checkbox" name="scope_follower_list" value="follower_list" /> follower_list</label>
+        <input type="checkbox" name="scope_basic" id="scope_basic" checked disabled /> <label for="scope_basic">basic</label><br>
+        <input type="checkbox" name="scope_public_content" id="scope_public_content" value="public_content "/> <label for="scope_public_content">public_content</label><br>
+        <input type="checkbox" name="scope_follower_list" id="scope_follower_list" value="follower_list" /> <label for="scope_follower_list">follower_list</label>
         </div>
         
         <div class="scopes__group--right scopes__group">
-        <label><input type="checkbox" name="scope_comments" value="comments" /> comments</label>
-        <label><input type="checkbox" name="scope_relationships" value="relationships" /> relationships</label>
-        <label><input type="checkbox" name="scope_likes" value="likes" /> likes</label>
+        <input type="checkbox" name="scope_comments" id="scope_comments" value="comments" /> <label for="scope_comments">comments</label><br>
+        <input type="checkbox" name="scope_relationships" id="scope_relationships" value="relationships" /> <label for="scope_relationships">relationships</label><br>
+        <input type="checkbox" name="scope_likes" id="scope_likes" value="likes" /> <label for="scope_likes">likes</label>
         </div>
     </div>
 

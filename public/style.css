@@ -1,3 +1,14 @@
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
 body {
     line-height: 1.3;
 }
@@ -34,7 +45,10 @@ body {
 .markdown-form label {
     font-weight:bold;
 }
-.markdown-form .scopes label { font-weight:normal; }
+.markdown-form .scopes label {
+    font-weight:normal; 
+    display:inline-block;
+}
 
 .markdown-form input[type="submit"] {
     border-radius:0;
@@ -71,6 +85,7 @@ body {
 }
 .scopes__group {
     flex-grow:1;
+    max-width:50%;
 }
 .scopes__group label{
     display:block;
