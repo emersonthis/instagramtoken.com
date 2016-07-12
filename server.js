@@ -94,6 +94,7 @@ app.get("/", function(req, res){
             }
             */
             var token = JSON.parse(body).access_token;
+            console.log('body', body);
             console.log('token', token);
             res.render('token.ejs', {token: token});
             // res.status(200).send(token);
