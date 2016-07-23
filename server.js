@@ -36,7 +36,7 @@ app.post('/submit', function(req, res){
     scopes = (scopes) ? '&scope='+scopes.join('+') : '';
         
     var redirect_uri = req.headers.referer;
-    console.log('redirect_uri', redirect_uri);
+    // console.log('redirect_uri', redirect_uri);
     var base = 'https://api.instagram.com/oauth/authorize/?';
     var href = base +'redirect_uri='+redirect_uri+'&response_type=code'+scopes+'&client_id='+req.body.client_id;
     
@@ -70,12 +70,11 @@ app.get("/", function(req, res){
         var ssl = ( req.headers['x-forwarded-proto'] || req.connection.encrypted ) ? true : false;
 
         // Build POST data for token request
-        console.log('req.headers', req.headers);
         var formData = {
             client_id: clientId,
             client_secret: clientSecret,
             grant_type: 'authorization_code',
-            redirect_uri: ( (ssl) ? 'https://' : 'http://' ) + req.headers.host,
+            redirect_uri: ( (ssl) ? 'https://' : 'http://' ) + req.headers.referer,
             code : req.query.code
         };
         
