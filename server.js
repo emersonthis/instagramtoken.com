@@ -35,9 +35,8 @@ app.post('/submit', function(req, res){
     if (req.body.scope_likes) scopes.push('likes');
     scopes = (scopes) ? '&scope='+scopes.join('+') : '';
         
-    var redirect_uri = req.headers.origin;
+    var redirect_uri = req.headers.referer;
     console.log('redirect_uri', redirect_uri);
-    console.log('req', req);
     var base = 'https://api.instagram.com/oauth/authorize/?';
     var href = base +'redirect_uri='+redirect_uri+'&response_type=code'+scopes+'&client_id='+req.body.client_id;
     
