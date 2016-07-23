@@ -37,6 +37,7 @@ app.post('/submit', function(req, res){
         
     var redirect_uri = req.headers.origin;
     console.log('redirect_uri', redirect_uri);
+    console.log('req', req);
     var base = 'https://api.instagram.com/oauth/authorize/?';
     var href = base +'redirect_uri='+redirect_uri+'&response_type=code'+scopes+'&client_id='+req.body.client_id;
     
