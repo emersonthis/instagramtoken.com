@@ -70,6 +70,7 @@ app.get("/", function(req, res){
         var ssl = ( req.headers['x-forwarded-proto'] || req.connection.encrypted ) ? true : false;
 
         // Build POST data for token request
+        console.log('req.headers', req.headers);
         var formData = {
             client_id: clientId,
             client_secret: clientSecret,
