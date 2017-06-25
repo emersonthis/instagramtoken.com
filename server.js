@@ -1,3 +1,5 @@
+"use strict";
+
 var express = require('express');
 var session = require('express-session');
 var bodyParser = require("body-parser");
@@ -7,6 +9,16 @@ var html = require('html');
 var app = express();
 var url = require('url');
 var clientId, redirectUri, clientSecret, redirectUri, sess;
+
+//dotenv
+var dotenv = require('dotenv');
+dotenv.load();
+
+//stripe
+const keyPublishable = process.env.PUBLISHABLE_KEY;
+const keySecret = process.env.SECRET_KEY;
+// const app = require("express")();
+const stripe = require("stripe")(keySecret);
 
 app.use(session({secret: 'thisemerson'}));
 app.use(function(req, res, next){
@@ -110,7 +122,37 @@ app.get("/", function(req, res){
         });
 });
 
+
+
+app.get("/donate", (req, res) =>
+  res.render("donate.ejs", {keyPublishable}));
+
+app.post("/charge", (req, res) => {
+  let amount = 500;
+
+  stripe.customers.create({
+     email: req.body.stripeEmail,
+    source: req.body.stripeToken
+  })
+  .then(customer =>
+    stripe.charges.create({
+      amount,
+      description: "Sample Charge",
+         currency: "usd",
+         customer: customer.id
+    }))
+  .then(charge => res.render("charge.ejs"));
+});
+
+
+
+
 var port = process.env.PORT || 3000;
 console.log(`Express app running on port ${port}`);
+
+console.log(`stripe keys`);
+console.log(keyPublishable);
+console.log(keySecret);
+
 
 module.exports = app;
