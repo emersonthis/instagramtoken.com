@@ -55,12 +55,11 @@ app.post('/submit', function(req, res){
     res.redirect(href);
 });
 
-// http://instagramtoken.herokuapp.com/oauthredirect?code=6783303006404cf4b92c1601427ca6ac
 app.get("/", function(req, res){
 
         // If there's no code param we're just showing the index
         if (!req.query.code)
-            return res.render('index.ejs');
+            return res.render('index.ejs', {keyPublishable});
         
         // These were saved during the /submit
         try {
@@ -117,15 +116,15 @@ app.get("/", function(req, res){
             }
             console.log('body', body);
             console.log('token', token);
-            res.render('token.ejs', {token: token});
+            res.render('token.ejs', {token: token, keyPublishable: keyPublishable});
             // res.status(200).send(token);
         });
 });
 
 
 
-app.get("/donate", (req, res) =>
-  res.render("donate.ejs", {keyPublishable}));
+// app.get("/donate", (req, res) =>
+//   res.render("donate.ejs", {keyPublishable}));
 
 app.post("/charge", (req, res) => {
   let amount = 500;
@@ -149,10 +148,5 @@ app.post("/charge", (req, res) => {
 
 var port = process.env.PORT || 3000;
 console.log(`Express app running on port ${port}`);
-
-console.log(`stripe keys`);
-console.log(keyPublishable);
-console.log(keySecret);
-
 
 module.exports = app;
