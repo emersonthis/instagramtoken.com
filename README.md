@@ -6,9 +6,15 @@ Free tool for developers to create Instagram API tokens manually: [https://insta
 * q lib for http
 * stripe lib for donation button
 
-Local insallation:
+Local installation:
 * `git clone ...`
-* `npm install`
-* (env variables) for "donate" button
+* `npm install`    
 * `node server`
+
+Remote installation:
+* ^
+* env variables
+    - GOOGLE_ANALYTICS
+    - PUBLISHABLE_KEY (Stripe)
+    - SECRET_KEY (Stripe)
 
