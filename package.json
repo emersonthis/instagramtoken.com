@@ -10,9 +10,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "markdown",
-    "html",
-    "pandoc"
+    "instagram",
+    "api",
+    "token"
   ],
   "author": "Emerson This",
   "license": "MIT",
