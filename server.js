@@ -17,7 +17,6 @@ dotenv.load();
 //stripe
 const keyPublishable = process.env.PUBLISHABLE_KEY;
 const keySecret = process.env.SECRET_KEY;
-// const app = require("express")();
 const stripe = require("stripe")(keySecret);
 
 app.use(session({secret: 'thisemerson'}));
@@ -48,7 +47,6 @@ app.post('/submit', function(req, res){
     scopes = (scopes) ? '&scope='+scopes.join('+') : '';
         
     var redirect_uri = req.headers.referer;
-    // console.log('redirect_uri', redirect_uri);
     var base = 'https://api.instagram.com/oauth/authorize/?';
     var href = base +'redirect_uri='+redirect_uri+'&response_type=code'+scopes+'&client_id='+req.body.client_id;
     
@@ -85,7 +83,6 @@ app.get("/", function(req, res){
             client_id: clientId,
             client_secret: clientSecret,
             grant_type: 'authorization_code',
-            // redirect_uri: ( (ssl) ? 'https://' : 'http://' ) + req.headers.origin,
             redirect_uri: req.headers.referer,
             code : req.query.code
         };
@@ -117,17 +114,11 @@ app.get("/", function(req, res){
             console.log('body', body);
             console.log('token', token);
             res.render('token.ejs', {token: token, keyPublishable: keyPublishable});
-            // res.status(200).send(token);
         });
 });
 
-
-
-// app.get("/donate", (req, res) =>
-//   res.render("donate.ejs", {keyPublishable}));
-
 app.post("/charge", (req, res) => {
-  let amount = 500;
+  let amount = 300;
 
   stripe.customers.create({
      email: req.body.stripeEmail,
@@ -136,7 +127,7 @@ app.post("/charge", (req, res) => {
   .then(customer =>
     stripe.charges.create({
       amount,
-      description: "Sample Charge",
+      description: "Donation from instagramtoken.com",
          currency: "usd",
          customer: customer.id
     }))
