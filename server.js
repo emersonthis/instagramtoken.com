@@ -83,7 +83,7 @@ app.get("/", function(req, res){
             client_id: clientId,
             client_secret: clientSecret,
             grant_type: 'authorization_code',
-            redirect_uri: 'https://instagramtoken.com/',
+            redirect_uri: 'https://instagramtoken.com/', //@TODO This won't work on localhost
             code : req.query.code
         };
         
