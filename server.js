@@ -10,6 +10,8 @@ var app = express();
 var url = require('url');
 var clientId, redirectUri, clientSecret, redirectUri, sess;
 
+var donationCents = 100;
+
 //dotenv
 var dotenv = require('dotenv');
 dotenv.load();
@@ -57,7 +59,7 @@ app.get("/", function(req, res){
 
         // If there's no code param we're just showing the index
         if (!req.query.code)
-            return res.render('index.ejs', {keyPublishable});
+            return res.render('index.ejs', {keyPublishable:keyPublishable, donationCents:donationCents});
         
         // These were saved during the /submit
         try {
@@ -113,12 +115,12 @@ app.get("/", function(req, res){
             }
             console.log('body', body);
             console.log('token', token);
-            res.render('token.ejs', {token: token, keyPublishable: keyPublishable});
+            res.render('token.ejs', {token: token, keyPublishable: keyPublishable, donationCents:donationCents});
         });
 });
 
 app.post("/charge", (req, res) => {
-  let amount = 300;
+  let amount = donationCents;
 
   stripe.customers.create({
      email: req.body.stripeEmail,

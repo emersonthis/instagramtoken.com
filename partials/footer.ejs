@@ -6,9 +6,9 @@ This tool costs time and money to maintain. Thanks for your help.
         class="stripe-button"
         data-key="<%= keyPublishable %>"
         data-locale="auto"
-        data-description="$3 Donation"
-        data-amount="300"
-        data-label="Donate $3"></script>
+        data-description="$<%= donationCents/100 %> Donation"
+        data-amount="<%= donationCents %>"
+        data-label="Donate $<%= donationCents/100 %>"></script>
     </form>
 
 
