@@ -41,6 +41,8 @@ app.post('/submit', function(req, res){
     sess.client_secret = req.body.client_secret;
 
     var scopes = [];
+
+    if (req.body.scope_basic) scopes.push('basic');    
     if (req.body.scope_public_content) scopes.push('public_content');
     if (req.body.scope_follower_list) scopes.push('follower_list');
     if (req.body.scope_comments) scopes.push('comments');
